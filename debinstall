@@ -1,5 +1,6 @@
 #!/bin/bash
 
+sudo apt install -y extlinux syslinux
 mkdir /boot/extlinux
 cp -r /lib/syslinux/modules/bios /boot/extlinux
 
@@ -15,8 +16,7 @@ EOF
 cat /lib/syslinux/mbr/mbr.bin > /dev/sda
 extlinux --install /boot/extlinux
 
-sudo apt install extlinux syslinux
-sudo apt-get purge libfreetype6 libfuse2 libpng16-16 grub
+sudo apt-get purge -y libfreetype6 libfuse2 libpng16-16 grub
 
 cat <<EOF > /etc/apt/apt.conf.d/01norecommends
 APT::Install-Recommends "0";
@@ -25,16 +25,18 @@ APT::AutoRemove::RecommendsImportant "0";
 APT::AutoRemove::SuggestsImportant "0";
 EOF
 
-sudo apt autoremove
-sudo apt install chromium chromium-l10n
-sudo apt install git ca-certificates curl
+sudo apt autoremove -y
+sudo apt install -y chromium chromium-l10n
+sudo apt install -y git ca-certificates curl
 git clone https://gitea.com/sorathpanzer/dotgit.git
-sudo apt install build-essential libx11-dev libxft-dev libxinerama-dev libimlib2-dev libexif-dev
-sudo apt install udiskie x11-xserver-utils xinput pulseaudio pulseaudio-utils pulsemixer hsetroot ntfs-3g fuse picom numlockx xdotool man
-sudo apt install zsh zsh-syntax-highlighting zsh-autosuggestions fzf exa bat doas trash-cli youtube-dl mpv xclip neovim
+sudo apt install -y build-essential libx11-dev libxft-dev libxinerama-dev libimlib2-dev libexif-dev
+sudo apt install -y udiskie x11-xserver-utils xinput pulseaudio pulseaudio-utils pulsemixer hsetroot ntfs-3g fuse picom numlockx xdotool man
+sudo apt install -y zsh zsh-syntax-highlighting zsh-autosuggestions fzf exa bat doas trash-cli youtube-dl mpv xclip neovim
 curl -L https://github.com/gokcehan/lf/releases/download/r24/lf-linux-amd64.tar.gz | tar xzC ~/.local/bin
-sudo echo "kernel.perf_cpu_time_max_percent = 0" >> /etc/sysctl.conf
+
 git clone https://github.com/Earnestly/sx
 cd sx
 sudo make PREFIX=/usr install
 cd
+
+sudo echo "kernel.perf_cpu_time_max_percent = 0" >> /etc/sysctl.conf
