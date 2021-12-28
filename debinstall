@@ -37,6 +37,7 @@ apt install -y git ca-certificates curl
 printf "$PASSWORD\n$PASSWORD" | sudo -Hu $USERNAME git clone https://gitea.com/sorathpanzer/dotgit.git /home/$USERNAME/.config/dotgit
 printf "$PASSWORD\n$PASSWORD" | sudo -Hu $USERNAME mkdir -p /home/$USERNAME/.cache/zsh
 printf "$PASSWORD\n$PASSWORD" | sudo -Hu $USERNAME touch /home/$USERNAME/.cache/zsh/history
+rm $HOME/.profile
 printf "$PASSWORD\n$PASSWORD" | sudo -Hu $USERNAME sh -c "cd /home/$USERNAME/.config/dotgit; stow -vt ~ dotfiles"
 printf "$PASSWORD\n$PASSWORD" | sudo -Hu $USERNAME sh -c "curl -L https://github.com/gokcehan/lf/releases/download/r24/lf-linux-amd64.tar.gz | tar xzC ~/.local/bin"
 
