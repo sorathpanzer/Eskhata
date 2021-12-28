@@ -49,3 +49,13 @@ git clone https://github.com/Earnestly/sx
 cd sx
 make PREFIX=/usr install
 cd
+rm -r sx
+
+apt install -y gir1.2-gst-plugins-base-1.0 gir1.2-gst-plugins-bad-1.0 xdg-user-dirs wireless-tools iwd ripgrep mediainfo bat pass xdotool highlight
+apt install -y libreoffice libreoffice-l10n-pt imagemagick transmission-cli fonts-dejavu ntp  bc pulseaudio hsetroot alsa-utils firewalld apparmor
+apt install -y xclip numlockx scrot rsync zathura doas udiskie trash-cli dunst youtube-dl physlock picom jq fzf mpv wmctrl light patch
+apt install -y unzip usbutils ffmpegthumbnailer pulsemixer rkhunter clamav 
+ 
+sudo systemctl enable ntp
+
+#ueberzug lazygit alacritty
