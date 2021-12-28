@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sudo apt install -y extlinux syslinux
-mkdir /boot/extlinux
+sudo mkdir /boot/extlinux
 cp -r /lib/syslinux/modules/bios /boot/extlinux
 
 cat <<EOF > /boot/extlinux/extlinux.conf
