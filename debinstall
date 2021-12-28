@@ -58,4 +58,16 @@ apt install -y unzip usbutils ffmpegthumbnailer pulsemixer rkhunter clamav
  
 sudo systemctl enable ntp
 
+echo "permit persist $USERNAME as root
+permit nopass $USERNAME cmd apt
+permit nopass $USERNAME cmd journalctl
+permit nopass $USERNAME cmd poweroff
+permit nopass $USERNAME cmd reboot
+permit nopass $USERNAME cmd udiskctl
+permit nopass $USERNAME cmd mount
+permit nopass $USERNAME cmd light" > /mnt/etc/doas.conf
+
+echo "vm.swappiness=10" > /mnt/etc/sysctl.d/99-sysctl.conf
+echo 1 | sudo tee /sys/module/snd_hda_intel/parameters/power_save
+
 #ueberzug lazygit alacritty
