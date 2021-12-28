@@ -34,11 +34,11 @@ apt autoremove -y
 apt install -y chromium chromium-l10n stow
 apt install -y git ca-certificates curl
 
-printf "$PASSWORD\n$PASSWORD" | sudo -Hu $USER_NAME git clone https://gitea.com/sorathpanzer/dotgit.git /home/$USER_NAME/.config/dotgit
-printf "$PASSWORD\n$PASSWORD" | sudo -Hu $USER_NAME mkdir -p /home/$USER_NAME/.cache/zsh
-printf "$PASSWORD\n$PASSWORD" | sudo -Hu $USER_NAME touch /home/$USER_NAME/.cache/zsh/history
-printf "$PASSWORD\n$PASSWORD" | sudo -Hu $USER_NAME sh -c "cd /home/$USER_NAME/.config/dotgit; stow -vt ~ dotfiles"
-printf "$PASSWORD\n$PASSWORD" | sudo -Hu $USER_NAME sh -c "curl -L https://github.com/gokcehan/lf/releases/download/r24/lf-linux-amd64.tar.gz | tar xzC ~/.local/bin"
+printf "$PASSWORD\n$PASSWORD" | sudo -Hu $USERNAME git clone https://gitea.com/sorathpanzer/dotgit.git /home/$USERNAME/.config/dotgit
+printf "$PASSWORD\n$PASSWORD" | sudo -Hu $USERNAME mkdir -p /home/$USERNAME/.cache/zsh
+printf "$PASSWORD\n$PASSWORD" | sudo -Hu $USERNAME touch /home/$USERNAME/.cache/zsh/history
+printf "$PASSWORD\n$PASSWORD" | sudo -Hu $USERNAME sh -c "cd /home/$USERNAME/.config/dotgit; stow -vt ~ dotfiles"
+printf "$PASSWORD\n$PASSWORD" | sudo -Hu $USERNAME sh -c "curl -L https://github.com/gokcehan/lf/releases/download/r24/lf-linux-amd64.tar.gz | tar xzC ~/.local/bin"
 
 apt install -y build-essential libx11-dev libxft-dev libxinerama-dev libimlib2-dev libexif-dev
 apt install -y udiskie x11-xserver-utils xinput pulseaudio pulseaudio-utils pulsemixer hsetroot ntfs-3g fuse picom numlockx xdotool man
