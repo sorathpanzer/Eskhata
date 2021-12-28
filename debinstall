@@ -12,7 +12,7 @@ DEFAULT Debian
 
 LABEL Debian
 	KERNEL /boot/$(ls /boot | grep vmlinuz)
-	APPEND root=/dev/sda1 rw
+	APPEND root=/dev/sda1 rw apparmor=1 security=apparmor
 	INITRD /boot/$(ls /boot | grep initrd)
 EOF
 
@@ -52,7 +52,7 @@ cd
 rm -r sx
 
 apt install -y gir1.2-gst-plugins-base-1.0 gir1.2-gst-plugins-bad-1.0 xdg-user-dirs wireless-tools iwd ripgrep mediainfo bat pass xdotool highlight
-apt install -y libreoffice libreoffice-l10n-pt imagemagick transmission-cli fonts-dejavu ntp  bc pulseaudio hsetroot alsa-utils firewalld apparmor
+apt install -y libreoffice libreoffice-l10n-pt imagemagick transmission-gtk fonts-dejavu ntp  bc pulseaudio hsetroot alsa-utils firewalld apparmor
 apt install -y xclip numlockx scrot rsync zathura doas udiskie trash-cli dunst youtube-dl physlock picom jq fzf mpv wmctrl light patch
 apt install -y unzip usbutils ffmpegthumbnailer pulsemixer rkhunter clamav
 
@@ -69,6 +69,8 @@ permit nopass $USERNAME cmd light" > /etc/doas.conf
 
 echo "vm.swappiness=10" > /etc/sysctl.d/99-sysctl.conf
 echo 1 | sudo tee /sys/module/snd_hda_intel/parameters/power_save
+
+mkdir /etc/polkit-1/rules.d
 
   echo '/* Allow members of the wheel group to execute any actions
   * without password authentication, similar to "sudo NOPASSWD:"
@@ -105,7 +107,6 @@ AutoConnect=true" > /etc/iwd/main.conf
 
 # Configure AppArmor Parser caching
 sed -i 's/#write-cache/write-cache/g' /etc/apparmor/parser.conf
-sed -i 's,#Include /etc/apparmor.d/,Include /etc/apparmor.d/#g' /etc/apparmor/parser.conf
 
 # Blacklisting kernel modules
 curl https://raw.githubusercontent.com/Whonix/security-misc/master/etc/modprobe.d/30_security-misc.conf >> /etc/modprobe.d/30_security-misc.conf
@@ -121,9 +122,6 @@ chmod 600 /etc/sysctl.d/*
 curl https://gitlab.com/garuda-linux/themes-and-settings/settings/garuda-common-settings/-/raw/master/etc/udev/rules.d/50-sata.rules > /etc/udev/rules.d/50-sata.rules
 curl https://gitlab.com/garuda-linux/themes-and-settings/settings/garuda-common-settings/-/raw/master/etc/udev/rules.d/60-ioschedulers.rules > /etc/udev/rules.d/60-ioschedulers.rules
 chmod 600 /etc/udev/rules.d/*
-
-# Remove nullok from system-auth
-sed -i 's/nullok//g' /etc/pam.d/system-auth
 
 # Disable coredump
 echo "* hard core 0" >> /etc/security/limits.conf
@@ -142,7 +140,7 @@ session		required	pam_unix.so
 EOF
 
 # Enable AppArmor notifications
-bash -c 'cat > /home/${USER}/.config/autostart/apparmor-notify.desktop' <<-'EOF'
+bash -c 'cat > /home/${USERNAME}/.config/autostart/apparmor-notify.desktop' <<-'EOF'
 [Desktop Entry]
 Type=Application
 Name=AppArmor Notify
@@ -153,17 +151,13 @@ StartupNotify=false
 NoDisplay=true
 EOF
 
-mkdir -p /etc/systemd/system/transmission.service.d
-echo "[Service]
-User=$USERNAME" > /etc/systemd/system/transmission.service.d/username.conf
-
 mkdir -p /etc/systemd/system/getty@tty1.service.d
 touch /etc/systemd/system/getty@tty1.service.d/override.conf
 echo "[Service]
 ExecStart=
 ExecStart=-/usr/bin/agetty --autologin $USERNAME --noclear %I $TERM" > /etc/systemd/system/getty@tty1.service.d/override.conf
 
-systemctl enable iwd.service transmission-daemon apparmor firewalld
+systemctl enable iwd.service apparmor firewalld
 aa-enforce /etc/apparmor.d/*
 
 #ueberzug lazygit alacritty
